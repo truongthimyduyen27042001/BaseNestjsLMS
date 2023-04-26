@@ -6,14 +6,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from '@nestjs/common';
-import { publicKey } from '../constants';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    console.log('vao day nayyyy');
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     console.log(token);
@@ -21,12 +19,11 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     try {
-      console.log('vao day nay');
       const payload = this.jwtService.verify(
-        'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjgyNTA5NjIyLCJleHAiOjE2ODI1OTYwMjJ9.pORkt0G9KGSYIluZThMLAqLncrtTOF5Pvd4oqklckDX4P9gkmJlsR_uVSDJCMIZMBDilby9PaRa7O91VcjvRSzHMg0SJu65ncWyf7a2m_PDywOBqrXMxEpwb95fquewOS_DfvOuKpXbAOKZZuBpueMsEbEPAr6l8DpCapTGFTBI2d7pvZnPi2zUr8YeHsYiLLWFS-mykGCCBeOEYQwoFVoku-yPQ363qjP6nUBeb81nYIx6jVJBMb-eRj5w_GriPUXsDxVsozTwTjwcBeM0_z_sFzLH5fIWpY756WkE95vbO_6PteuXju5zYpRlkGhE_lYH6I0TEQ7bGzpM1OuMBow',
+        'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjgyNTEwNDAwLCJleHAiOjE2ODI1OTY4MDB9.bNTjS4bi01W61B6goRuaSzYOQrej_E414B5Pt8208-9AbxnmcrBGP0YjYvI_VHZ_yaYkxCCdZPlq_iN5_vJRbrEOnpEOP1TElxkS3Pspm54mLk0pcJTcCd9bOlU4vZSYlhNHJKbroQHofuSvIjx6luvLC8HdQEY8gkMlJdEP4iYA0WWNMmHlRX7dBDexW7IjQSO_h7JOg1NcylPEMY6OT16YGpcCnGzd7nz6oDxrpjfV10LDYcUwhyMBiKoxrRSjzCEQm5ouQL1XZUWSQVhbcC554MYCpwXEtsQfHU-cBlLQ1YHidirU8IbijDA4xGNvLmG5DgblJkF9PspgpZkS2Q',
         {
           algorithms: ['RS256'],
-          publicKey: publicKey.toString(),
+          publicKey: process.env.PUBLIC_KEY,
         },
       );
       console.log('payload: ', payload);

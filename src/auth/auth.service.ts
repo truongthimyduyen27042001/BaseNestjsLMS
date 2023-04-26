@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 import { UserDTO } from './dto/user.dto';
 import { validate } from 'class-validator';
 import * as bcrypt from 'bcrypt';
-import { privateKey } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -65,7 +64,7 @@ export class AuthService {
               { email: userDTO.email },
               {
                 algorithm: 'RS256',
-                privateKey,
+                privateKey: process.env.PRIVATE_KEY,
               },
             ),
           },

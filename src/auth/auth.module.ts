@@ -8,8 +8,26 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/user.entity';
 import { JwtStrategy } from './strategy/jwt.strategy';
-import { publicKey, privateKey } from './constants';
 import { JwtAuthGuard } from './strategy/jwt-auth.guard';
+
+import * as crypto from 'crypto';
+
+// Generate key pair
+const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+  modulusLength: 2048,
+  publicKeyEncoding: {
+    type: 'spki',
+    format: 'pem',
+  },
+  privateKeyEncoding: {
+    type: 'pkcs8',
+    format: 'pem',
+  },
+});
+
+// Store keys in environment variables
+process.env.PUBLIC_KEY = publicKey;
+process.env.PRIVATE_KEY = privateKey;
 
 @Module({
   imports: [
@@ -20,8 +38,8 @@ import { JwtAuthGuard } from './strategy/jwt-auth.guard';
       imports: [ConfigModule],
       useFactory: () => {
         return {
-          privateKey: privateKey.toString(),
-          publicKey: publicKey.toString(),
+          privateKey: process.env.PRIVATE_KEY,
+          publicKey: process.env.PUBLIC_KEY,
           signOptions: { expiresIn: '1d', algorithm: 'RS256' },
         };
       },
