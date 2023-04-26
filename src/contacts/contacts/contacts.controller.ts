@@ -8,13 +8,12 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class ContactsController {
   constructor(private contactsService: ContactsService) {}
   @Get()
-  index(): string {
-    return 'this action will return contacts';
+  index(): Promise<Contact[]> {
+    return this.contactsService.findAll();
   }
 
   @Post('create')
   async create(@Body() contactData: Contact): Promise<Contact> {
-    console.log('thuc hien create');
     return this.contactsService.create(contactData);
   }
 
@@ -22,7 +21,7 @@ export class ContactsController {
   async update(
     @Param('id') id,
     @Body() contactData: Contact,
-  ): Promise<UpdateResult> {R
+  ): Promise<UpdateResult> {
     contactData.id = Number(id);
     return this.contactsService.update(id, contactData);
   }

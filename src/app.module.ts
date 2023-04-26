@@ -4,10 +4,18 @@ import { AppService } from './app.service';
 import { ContactsModule } from './contacts/contacts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Contact } from './contacts/contacts/contacts.entity';
+import { User } from './users/user.entity';
+import { UsersService } from './users/users/users.service';
+import { UsersController } from './users/users/users.controller';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     ContactsModule,
+    UsersModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -15,11 +23,12 @@ import { Contact } from './contacts/contacts/contacts.entity';
       username: 'root',
       password: 'MyDuyen27042001@@',
       database: 'Test',
-      entities: [Contact],
+      entities: [Contact, User],
       synchronize: false,
     }),
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, UsersController],
+  providers: [AppService, UsersService],
 })
 export class AppModule {}
