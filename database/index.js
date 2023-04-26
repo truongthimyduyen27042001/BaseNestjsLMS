@@ -25,29 +25,41 @@
 
 // module.exports = connection
 
-
-// //Tao thu muc database => 
+// //Tao thu muc database =>
 // //1. connection
-// //2. init => file nay tao db / table user 
+// //2. init => file nay tao db / table user
 // // => dua tren bai tap buoi truoc
 
-const connection = require('./connection')
-connection.query(`drop table Student`)
+const connection = require("./connection");
+connection.query(`drop table Student`);
 connection.query(`CREATE TABLE Student (
   id int NOT NULL AUTO_INCREMENT,
-  fullName varchar(255) NOT NULL,
+  username varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  salt varchar(255),
+  name varchar(255),
   gender boolean,
   age int,
+  email varchar(255),
   PRIMARY KEY (id)
-)`)
+)`);
 
 //create some student in table Student;
-connection.query(`insert into Student(fullName, gender, age) values(?,?,?)`, ['Truong Thi My Duyen', false, 20])
-connection.query(`insert into Student(fullName, gender, age) values(?,?,?)`, ['Le Tuan 1', false, 30])
-connection.query(`insert into Student(fullName, gender, age) values(?,?,?)`, ['Le Tuan 2', false, 25])
-connection.query(`insert into Student(fullName, gender, age) values(?,?,?)`, ['Truong Thi My Duyen 2', false, 21])
-connection.query(`insert into Student(fullName, gender, age) values(?,?,?)`, ['Truong Thi My Duyen 5', false, 21])
-connection.query(`insert into Student(fullName, gender, age) values(?,?,?)`, ['Truong Thi My Duyen 9', false, 21])
+connection.query(
+  `insert into Student(username, password, salt, name, gender, age, email) values(?,?,?,?,?,?,?)`,
+  ["duyentruong", "password1", "salt1", "duyen", false, 20, 'duyen@gmail.com']
+);
+connection.query(
+  `insert into Student(username, password, salt, name, gender, age, email) values(?,?,?,?,?,?,?)`,
+  ["letuan", "password2", "salt2", "tuan", false, 20, 'duyen@gmail.com']
+);
+connection.query(
+  `insert into Student(username, password, salt, name, gender, age, email) values(?,?,?,?,?,?,?)`,
+  ["satran", "password3", "salt3", "sa", false, 20, 'sa@gmail.com']
+);
+connection.query(
+  `insert into Student(username, password, salt, name, gender, age, email) values(?,?,?,?,?,?,?)`,
+  ["tamtruong", "password4", "salt4", "tam", false, 20, 'tam@gmail.com']
+);
 
-
-console.log('done')
+console.log("done");
