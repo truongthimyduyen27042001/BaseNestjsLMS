@@ -60,11 +60,12 @@ export class AuthService {
           status: 200,
           msg: {
             data: userDetails,
-            access_token: this.jwtService.sign(
+            access_token: await this.jwtService.signAsync(
               { email: userDTO.email },
               {
                 algorithm: 'RS256',
                 privateKey: process.env.PRIVATE_KEY,
+                expiresIn: '1h',
               },
             ),
           },

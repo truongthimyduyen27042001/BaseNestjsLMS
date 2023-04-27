@@ -38,6 +38,6 @@ export class AuthController {
   @Get('profile')
   getProfile(@Req() req, @Res() res) {
     // return req.user;
-    return res.send('hehehe');
+    return res.send('pass roi nesdsdsd');
   }
 }
